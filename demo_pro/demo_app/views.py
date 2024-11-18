@@ -52,3 +52,25 @@ def add_products(req) :
             return render(req,'shop/add_products.html')
     else:
         return redirect(demo_login)    
+    
+def edit_product(req,pid) :
+        if req.method=='POST':
+            proid=req.POST['proid']
+            pname=req.POST['name']
+            des=req.POST['descrip']
+            pprice=req.POST['price']
+            oprice=req.POST['off_price']
+            pstock=req.POST['stock']
+            file=req.FILES.get('img')
+            if file:
+                Product.objects.filter(pk=proid).update(pid=proid,name=pname,des=des,price=pprice,offer_price=oprice,stock=pstock,img=file)
+                data=Product.objects.get(pk=pid)
+                data.img=file
+                data.save()
+            else:  
+                Product.objects.filter(pk=pid).update(pid=pid,name=pname,des=des,price=pprice,offer_price=oprice,stock=pstock,img=file)
+                return redirect(shop_home)
+        else:
+            data=Product.objects.get(pk=pid)
+            return render(req,'shop/edit_product.html',{'data':data})
+            
