@@ -7,4 +7,5 @@ urlpatterns=[
     path('logout',views.demo_shop_logout),
     path('add',views.add_products),
     path('edit_product/<pid>',views.edit_product),
+    path('delete_product/<pid>',views.delete_product),
 ]

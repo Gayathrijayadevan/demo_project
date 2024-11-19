@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .models import *
+import os
 # Create your views here.
 
 
@@ -63,14 +64,22 @@ def edit_product(req,pid) :
             pstock=req.POST['stock']
             file=req.FILES.get('img')
             if file:
-                Product.objects.filter(pk=proid).update(pid=proid,name=pname,des=des,price=pprice,offer_price=oprice,stock=pstock,img=file)
+                Product.objects.filter(pk=pid).update(pid=proid,name=pname,des=des,price=pprice,offer_price=oprice,stock=pstock,img=file)
                 data=Product.objects.get(pk=pid)
                 data.img=file
                 data.save()
             else:  
                 Product.objects.filter(pk=pid).update(pid=pid,name=pname,des=des,price=pprice,offer_price=oprice,stock=pstock,img=file)
-                return redirect(shop_home)
+            return redirect(shop_home)
         else:
             data=Product.objects.get(pk=pid)
             return render(req,'shop/edit_product.html',{'data':data})
-            
+
+def delete_product(req,pid):
+    data=Product.objects.get(pk=pid)
+    file=data.img.url
+    file=file.split('/')[-1]
+    os.remove('media/'+file)
+    data.delete()
+    return redirect(shop_home)
+
