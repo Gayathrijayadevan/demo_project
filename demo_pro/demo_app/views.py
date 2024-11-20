@@ -116,5 +116,15 @@ def user_home(req):
         return render(req,'user/user_home.html',{'Products':data})
     else:
         return redirect(demo_login)
-    
-  
+
+def pro_dtl(req,pid):
+    if 'user' in req.session:
+        try:
+            data=Product.objects.get(pk=pid)
+        except:
+            messages.warning(req,'sorry the details are not avaliable')
+            return redirect(pro_dtl)  
+         
+        return render(req,'user/product_dtl.html',{'Products':data})
+    else:
+        return redirect(user_home)
