@@ -3,31 +3,41 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .models import *
 import os
+from django.contrib.auth.models import User
 # Create your views here.
 
 
 def demo_login(req):
     if 'shop' in req.session:
         return redirect(shop_home)
+    if 'user' in req.session:
+        return redirect(user_home)
     if req.method=='POST':
         uname=req.POST['uname']
         password=req.POST['password']
         data=authenticate(username=uname,password=password)
         if data:
             login(req,data)
-            req.session['shop']=uname #creating a session
-            return redirect(shop_home)
+            if data.is_superuser:
+                req.session['shop']=uname #creating a session
+                return redirect(shop_home)
+            else:
+                req.session['user']=uname #creating a session for user
+                return redirect(user_home)
         else:
             messages.warning(req,'invalid username or password') #to display error message
             return redirect(demo_login)  
     else:
         return render(req,'login.html')
-    
+
 def demo_shop_logout(req):
     logout(req)
     req.session.flush() #for deleting the session
     return redirect(demo_login)
-       
+           
+
+#-----------------------------------admin-----------------------
+
 def shop_home(req):
     if 'shop' in req.session:
         data=Product.objects.all()
@@ -83,3 +93,28 @@ def delete_product(req,pid):
     data.delete()
     return redirect(shop_home)
 
+#----------------------------------------user--------------------------
+
+def register(req):
+    if req.method=='POST':
+        uname=req.POST['uname']
+        email=req.POST['email']
+        pswd=req.POST['pswd']
+        try:
+            data=User.objects.create_user(first_name=uname,email=email,username=email,password=pswd)
+            data.save()
+        except:
+            messages.warning(req,'invalid username or password')
+            return redirect(register)   
+        return redirect(demo_login) 
+    else:
+        return render(req,'user/register.html')    
+    
+def user_home(req):
+    if 'user' in req.session:
+        data=Product.objects.all()
+        return render(req,'user/user_home.html',{'Products':data})
+    else:
+        return redirect(demo_login)
+    
+  

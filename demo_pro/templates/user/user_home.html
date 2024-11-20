@@ -8,6 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+  {% csrf_token %}
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Demo_shop</a>
@@ -28,6 +29,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">Cart</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="logout">logout</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -36,13 +40,15 @@
       <div class="container" style="margin-top: 20px;">
         <div class="row" style="gap:10px">
           {% for pro in Products %}
-          <div class="card" style="width:350px; ">
-            <img class="card-img-top" src="{{pro.img.url}}" alt="Card image" style="width: 100%; height: 400px;">
-            <div class="card-body">
-              <h4 class="card-title">{{ pro.name }}</h4>
-              <p class="card-text">{{ pro.des }}</p>
-            </div>
-          </div><br>
+          <a href="udhhd">
+            <div class="card" style="width:350px; ">
+              <img class="card-img-top" src="{{pro.img.url}}" alt="Card image" style="width: 100%; height: 400px;">
+              <div class="card-body">
+                <h4 class="card-title">{{ pro.name }}</h4>
+                <p class="card-text">{{ pro.des }}</p>
+              </div>
+            </div><br>
+          </a>
           {% endfor %}
         </div>
       </div>
