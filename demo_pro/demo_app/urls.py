@@ -14,5 +14,7 @@ urlpatterns=[
     #-----------------------user-----------------------
     path('register',views.register),
     path('user_home',views.user_home),
-    path('product_dtl',views.pro_dtl),
+    path('product_dtl/<pid>',views.pro_dtl),
+    path('add_to_cart/<pid>',views.add_to_cart),
+    path('view_cart',views.view_cart),
 ]

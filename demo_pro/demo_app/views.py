@@ -118,13 +118,16 @@ def user_home(req):
         return redirect(demo_login)
 
 def pro_dtl(req,pid):
-    if 'user' in req.session:
-        try:
-            data=Product.objects.get(pk=pid)
-        except:
-            messages.warning(req,'sorry the details are not avaliable')
-            return redirect(pro_dtl)  
-         
+        data=Product.objects.get(pk=pid)
         return render(req,'user/product_dtl.html',{'Products':data})
-    else:
-        return redirect(user_home)
+
+def add_to_cart(req,pid):
+    product=Product.objects.get(pk=pid)   
+    user=User.objects.get(username=req.session['user'])
+    data=Cart.objects.create(product=product,user=user,qty=1)
+    data.save()
+    return redirect(view_cart)
+
+def view_cart(req):
+    return render(req,'user/cart.html')
+    
