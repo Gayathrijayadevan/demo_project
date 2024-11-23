@@ -153,3 +153,26 @@ def qty_dec(req,cid):
         data.delete()
     return redirect(view_cart)
     
+def cart_pro_buy(req,cid):  #to buy product from the cart
+    cart=Cart.objects.get(pk=cid)    
+    product=cart.product
+    user=cart.user
+    qty=cart.qty
+    price=product.offer_price*qty
+    buy=Buy.objects.create(product=product,user=user,qty=qty,price=price)
+    buy.save()
+    return redirect(bookings)
+
+def pro_buy(req,pid): # to buy product directly from product_dtls page
+    product=Product.objects.get(pk=pid)
+    user=User.objects.get(username=req.session['user'])
+    qty=1
+    price=product.offer_price
+    buy=Buy.objects.create(product=product,user=user,qty=qty,price=price)
+    buy.save()
+    return redirect(bookings)
+
+def bookings(req):
+    user=User.objects.get(username=req.session['user'])
+    buy=Buy.objects.filter(user=user)[::-1]
+    return render(req,'user/bookings.html',{'bookings':buy})

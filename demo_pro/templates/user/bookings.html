@@ -10,17 +10,15 @@
 <body>
   <div class="container mt-5">
     <div class="row">
-      {% for i in cart %}
+      {% for i in bookings %}
         <div class="col-md-5">
             <img src="{{ i.product.img.url }}" alt="Product Image" class="img-fluid rounded shadow" style="height: 500px;width: 90%;">
         </div>
 
         <div class="col-md-7">
             <h1 class="mb-3">{{ i.product.name }}</h1>
-            <p>Price: <span class="text-success fw-bold">${{ i.product.offer_price }}</span></p>
-            <p><button><a href="qty_dec/{{i.pk}}" style="text-decoration: none;">-</a></button>quantity:<span class="text-success fw-bold">{{i.qty}}</span><button><a href="qty_in/{{i.pk}}"style="text-decoration: none;">+</a></button></p>
-            <a href="cart_pro_buy/{{i.pk}}"><button class="btn btn-primary mt-3">Buy Now</button></a>
-            
+            <p>Price: <span class="text-success fw-bold">${{ i.offer_price }}</span></p>
+            <p>quantity:<span class="text-success fw-bold">{{i.qty}}</span>
         </div>
         {% endfor %}
     </div>
