@@ -10,6 +10,7 @@ urlpatterns=[
     path('add',views.add_products),
     path('edit_product/<pid>',views.edit_product),
     path('delete_product/<pid>',views.delete_product),
+    path('view_bookings',views.view_bookings),
 
     #-----------------------user-----------------------
     path('register',views.register),
